@@ -27,18 +27,18 @@ router.post('/:id/comments', (req, res) => {
     const commentInfo = req.body
     DBase.findById(id)
     if (!id) {
-        res.send(404).json({ message: "The post with the specified ID does not exist." })
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
     }
     else if (!commentInfo) {
-        res.send(400).json({ errorMessage: "Please provide text for the comment." })
+        res.status(400).json({ errorMessage: "Please provide text for the comment." })
     }
     else {
         DBase.insertComment(commentInfo)
             .then(comment => {
-                res.send(201).json(comment)
+                res.status(201).json(comment)
             })
             .catch(() => {
-                res.send(500).json({ error: "There was an error while saving the comment to the database" })
+                res.status(500).json({ error: "There was an error while saving the comment to the database" })
             })
     }
 })
@@ -62,7 +62,7 @@ router.get('/:id', (req, res) => {
             if (found) {
                 res.status(200).json(found)
             } else {
-                res.send(404).json({ message: "The post with the specified ID does not exist." })
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
         })
         .catch(() => {
@@ -73,8 +73,20 @@ router.get('/:id', (req, res) => {
 
 //5 -- GET for posts/:id/comments
 router.get('/:id/comments', (req, res) => {
-
+    const id = req.params.id
+    DBase.findPostComments(id)
+        .then(found => {
+            if (found) {
+                res.status(200).json(found)
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The comments information could not be retrieved." })
+        })
 })
+
 
 //6 -- DELETE for posts/:id
 router.delete('/:id', (req, res) => {
