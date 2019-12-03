@@ -90,12 +90,43 @@ router.get('/:id/comments', (req, res) => {
 
 //6 -- DELETE for posts/:id
 router.delete('/:id', (req, res) => {
+    const id = req.params.id
 
+    DBase.remove(id)
+        .then(gone => {
+            if (gone) {
+                res.status(200).json({ message: "The user was deleted", gone })
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The post could not be removed" })
+        })
 })
 
 //7 -- PUT for posts/:id
 router.put('/:id', (req, res) => {
+    const id = req.params.id
+    const postInfo = req.body
 
+    DBase.findById(id)
+        .then(writing => {
+            if (!writing) {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+    if (!postInfo.title || !postInfo.contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    } else {
+        DBase.update(id, postInfo)
+            .then(postInfo => {
+                res.status(200).json({ message: "post updated", postInfo })
+            })
+            .catch(() => {
+                res.status(500).json({ error: "The post information could not be modified." })
+            })
+    }
 })
 
 module.exports = router;
