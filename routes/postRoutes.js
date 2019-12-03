@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
         res.send(400).json({ errorMessage: "Please provide title and contents for the post." })
     }
     else {
-        DBase.insert(req.body)
+        DBase.insert(postInfo)
             .then(writing => {
                 res.status(201).json(writing)
             })
@@ -23,7 +23,24 @@ router.post('/', (req, res) => {
 
 //2 -- POST for posts/:id/comments
 router.post('/:id/comments', (req, res) => {
-
+    const id = req.params.id
+    const commentInfo = req.body
+    DBase.findById(id)
+    if (!id) {
+        res.send(404).json({ message: "The post with the specified ID does not exist." })
+    }
+    else if (!commentInfo) {
+        res.send(400).json({ errorMessage: "Please provide text for the comment." })
+    }
+    else {
+        DBase.insertComment(commentInfo)
+            .then(comment => {
+                res.send(201).json(comment)
+            })
+            .catch(() => {
+                res.send(500).json({ error: "There was an error while saving the comment to the database" })
+            })
+    }
 })
 
 //3 -- GET for global posts
