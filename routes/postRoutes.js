@@ -121,7 +121,7 @@ router.put('/:id', (req, res) => {
     } else {
         DBase.update(id, postInfo)
             .then(postInfo => {
-                res.status(200).json({ message: "post updated", postInfo })
+                res.status(200).json({ message: "Updated post", postInfo } )
             })
             .catch(() => {
                 res.status(500).json({ error: "The post information could not be modified." })
