@@ -8,7 +8,7 @@ router.post('/' , (req, res) => {
 })
 
 //2 -- POST for posts/:id/comments
-router.post('/' , (req, res) => {
+router.post('/:id/comments' , (req, res) => {
 
 })
 
@@ -18,22 +18,22 @@ router.get('/' , (req, res) => {
 })
 
 //4 -- GET for posts/:id
-router.get('/' , (req, res) => {
+router.get('/:id' , (req, res) => {
 
 })
 
 //5 -- GET for posts/:id/comments
-router.get('/' , (req, res) => {
+router.get('/:id/comments' , (req, res) => {
 
 })
 
 //6 -- DELETE for posts/:id
-router.delete('/' , (req, res) => {
+router.delete('/:id' , (req, res) => {
 
 })
 
 //7 -- PUT for posts/:id
-router.put('/' , (req, res) => {
+router.put('/:id' , (req, res) => {
 
 })
 
