@@ -45,7 +45,13 @@ router.post('/:id/comments', (req, res) => {
 
 //3 -- GET for global posts
 router.get('/', (req, res) => {
-
+    DBase.find(req.query)
+        .then(posts => {
+            res.status(200).json(posts)
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The posts information could not be retrieved." })
+        })
 })
 
 //4 -- GET for posts/:id
