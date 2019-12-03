@@ -56,6 +56,18 @@ router.get('/', (req, res) => {
 
 //4 -- GET for posts/:id
 router.get('/:id', (req, res) => {
+    const id = req.params.id
+    DBase.findById(id)
+        .then(found => {
+            if (found) {
+                res.status(200).json(found)
+            } else {
+                res.send(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The post information could not be retrieved." })
+        })
 
 })
 
