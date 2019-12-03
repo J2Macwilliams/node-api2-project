@@ -2,38 +2,52 @@ const express = require('express');
 
 const router = express.Router();
 
-//1 POST for global posts
-router.post('/' , (req, res) => {
+const DBase = require('../data/db')
 
+//1 POST for global posts
+router.post('/', (req, res) => {
+    const postInfo = req.body;
+    if (!postInfo.title || !postInfo.contents) {
+        res.send(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+    else {
+        DBase.insert(req.body)
+            .then(writing => {
+                res.status(201).json(writing)
+            })
+            .catch(() => {
+                res.status(500).json({ error: "There was an error while saving the post to the database" })
+            })
+    }
 })
 
 //2 -- POST for posts/:id/comments
-router.post('/:id/comments' , (req, res) => {
+router.post('/:id/comments', (req, res) => {
 
 })
 
 //3 -- GET for global posts
-router.get('/' , (req, res) => {
+router.get('/', (req, res) => {
 
 })
 
 //4 -- GET for posts/:id
-router.get('/:id' , (req, res) => {
+router.get('/:id', (req, res) => {
 
 })
 
 //5 -- GET for posts/:id/comments
-router.get('/:id/comments' , (req, res) => {
+router.get('/:id/comments', (req, res) => {
 
 })
 
 //6 -- DELETE for posts/:id
-router.delete('/:id' , (req, res) => {
+router.delete('/:id', (req, res) => {
 
 })
 
 //7 -- PUT for posts/:id
-router.put('/:id' , (req, res) => {
+router.put('/:id', (req, res) => {
 
 })
 
