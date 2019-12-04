@@ -91,16 +91,11 @@ router.get('/:id/comments', (req, res) => {
 //6 -- DELETE for posts/:id
 router.delete('/:id', (req, res) => {
     const id = req.params.id
-    DBase.findById(id)
-        .then(found => {
-            if (found) {
-                res.send(found)
-            }
-        })
+
     DBase.remove(id)
         .then(gone => {
             if (gone) {
-                res.status(200).json({ message: "The post was deleted"})
+                res.status(200).json({ message: "The post was deleted", gone })
             } else {
                 res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
@@ -119,8 +114,6 @@ router.put('/:id', (req, res) => {
         .then(writing => {
             if (!writing) {
                 res.status(404).json({ message: "The post with the specified ID does not exist." })
-            } else {
-                res.status(200).json(writing)
             }
         })
     if (!postInfo.title || !postInfo.contents) {
@@ -128,12 +121,17 @@ router.put('/:id', (req, res) => {
     } else {
         DBase.update(id, postInfo)
             .then(postInfo => {
-                res.status(200).json({ message: "Updated post", postInfo })
+                res
+
+                    .status(200)
+                    .json({ message: "Updated post", postInfo })
             })
             .catch(() => {
                 res.status(500).json({ error: "The post information could not be modified." })
             })
     }
+
+
 })
 
 module.exports = router;

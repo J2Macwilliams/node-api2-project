@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Grid, Card, Typography, makeStyles } from "@material-ui/core"
+import { Grid, makeStyles, Card, Typography } from '@material-ui/core'
+// import PostCard from './PostCard'
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
-    Card: {
+    card: {
+        margin: 10,
+        padding: 10,
         background: 'green',
-        collor: 'white'
+        color: 'white'
     }
-}))
+}));
 
 
 function PostsList() {
-    const [posts, setPosts] = useState()
+    const [posts, setPosts] = useState([])
     const classes = useStyles();
+
 
     useEffect(() => {
         axios
@@ -30,22 +34,24 @@ function PostsList() {
 
 
     return (
-        <div className={classes.root}>
-            <Grid container>
-                {posts.map(midEarth => {
-                    return (
-                        <Grid item key={midEarth.id} >
+        <div>
+            <Typography variant="h3">
+                Middle-Earth Wisdom
+            </Typography>
+            <Grid container className={classes.root} spacing={1}>
+                {posts.map((midEarth, id) => (
+                    <Grid item key={id} xs={12} sm={6} md={3}>
                         <Card className={classes.card}>
-                            <Typography variant="h3">
+                            <Typography variant="h5">
                                 {midEarth.title}
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h6">
                                 {midEarth.contents}
                             </Typography>
                         </Card>
-                    </Grid>
-                    );
-                    }
+                    </Grid>)
+
+
                 )}
             </Grid>
         </div>
